@@ -4,6 +4,7 @@
 #include <cstring>
 #include <Windows.h>
 #include "dictate.cpp"
+#include "hangup.cpp"
 #include "data.h"
 using namespace std;
 
@@ -21,7 +22,7 @@ if(wstr) delete[] wstr;
 return str;
 }
 
-void indata(bool recite_phrase)
+void indata(int mode)
 {
 	system("CLS");
 	cout << "输入背诵文档的文件名" << endl;
@@ -38,17 +39,19 @@ void indata(bool recite_phrase)
 		inFile.open(name.c_str());
 	}
 	content word[MAX];
-	if (recite_phrase) {
+	if (mode == 1) {
 		cout << "请选择背诵词组的方式：" << endl;
-	} else {
+	} else if (mode == 0) {
 		cout << "请选择背诵单词的方式：" << endl;
 	}
-	cout << "1.给中文，默写英文" << endl;
-	cout << "2.给英文，默写中文" << endl;
 	char ch;
-	ch = getch();
+	if (mode == 0 || mode == 1) {
+		cout << "1.给中文，默写英文" << endl;
+		cout << "2.给英文，默写中文" << endl;
+		ch = getch();
+		while (ch != '1' && ch != '2') ch = getch();
+	}
 	int n = 0;
-	while (ch != '1' && ch != '2') ch = getch();
 //	if (ch == '1') 
 //	while (getline(inFile,word[n].chi) && getline(inFile,word[n].eng)) n++;
 //	if (ch == '2') 
@@ -63,6 +66,11 @@ void indata(bool recite_phrase)
 		}
 		n++;	
 	}
-	dictate(recite_phrase, ch - '0', word, n);
+	if (mode == 2) {
+		HangUp(word, n);
+	} else {
+		dictate(mode, ch - '0', word, n);
+	}
+	
 	inFile.close();
 }

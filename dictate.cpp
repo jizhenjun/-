@@ -42,15 +42,17 @@ int Check(string text_in, string ans_in) {
 void dictate(bool recite_phrase, int first_chi, content word[],int n)
 {
 	srand((unsigned)time(NULL));
-	int round;//背诵的轮数
-	cout << "请输入你想要默写的次数:" << endl;
-	cin >> round;
+	int word_count;//背诵的单词数 
+	cout << "请输入你想要默写的单词数:" << endl;
+	cin >> word_count;
 	cin.get();//读取换行符 
 	int num[MAX];
 	int check[MAX] = {0};
 	int i,j,k;//循环变量 
 	string recite;
 	int score = 0;
+	n = min(n, word_count);
+	int round = 1;
 	for (k = 0;k<round;k++)
 	{
 		j = 0;
